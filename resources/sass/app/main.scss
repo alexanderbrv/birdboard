@@ -1,0 +1,58 @@
+// Background
+body,
+.card,
+.dropdown-menu {
+  background-color: rgb(48, 49, 51) !important;
+}
+
+.bg-dark,
+.card-header,
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: rgb(34, 34, 34) !important;
+}
+
+// Color
+body {
+  color: rgba(239, 239, 239, 0.8);
+  font-size: 0.875rem;
+}
+
+.dropdown-menu, .dropdown-item,
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dropdown-item:hover, .dropdown-item:focus,
+.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus,
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+  color: rgba(255, 255, 255, 1);
+}
+
+a {
+  color: rgb(239, 239, 239);
+}
+
+a:hover {
+  color: rgb(239, 239, 239);
+}
+
+// Reset css
+a, button {
+  outline: none;
+}
+
+// Project
+.project {
+  display: inline-block;
+  vertical-align: top;
+  width: 32%;
+  padding: 1rem;
+  border-radius: .5rem;
+  background-color: #262729;
+  margin-bottom: 1rem;
+}
+
+.project a {
+  font-size: 1.2rem;
+}

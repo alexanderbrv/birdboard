@@ -47,13 +47,13 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $attributes = $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
             'notes'       => 'nullable|string',
         ]);
 
-        $request->user()->projects()->save(new Project($data));
+        $request->user()->projects()->save(new Project($attributes));
 
         return redirect()->route('projects.index');
     }
@@ -61,12 +61,17 @@ class ProjectsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        $tasks = $project->tasks;
+
+        return view('projects.show')->with([
+            'project' => $project,
+            'tasks'   => $tasks,
+        ]);
     }
 
     /**

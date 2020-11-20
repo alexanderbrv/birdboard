@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <title>Birdboard: Projects</title>
+@section('content')
+    <div>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-<body>
+        <h5>{{ __('My Projects') }}</h5>
 
-<div>
-    <h1>Projects</h1>
-
-    <ul>
-        @foreach($projects as $project)
-            <li>{{ $project->title }}</li>
-        @endforeach
-    </ul>
-</div>
-
-</body>
-</html>
+        <div class="projects-wrap">
+            @foreach($projects as $project)
+                <div class="project">
+                    <a href="{{ route('projects.show', $project->id) }}">{{ $project->title }}</a>
+                    <p>{{ $project->description }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endsection
