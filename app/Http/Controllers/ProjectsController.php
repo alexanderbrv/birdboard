@@ -7,16 +7,6 @@ use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', [
-            'only' => [
-                'index',
-                'store',
-            ],
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -66,11 +56,9 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        $tasks = $project->tasks;
-
         return view('projects.show')->with([
             'project' => $project,
-            'tasks'   => $tasks,
+            'tasks'   => $project->tasks,
         ]);
     }
 

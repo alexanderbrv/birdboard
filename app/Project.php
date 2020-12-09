@@ -27,4 +27,19 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function path()
+    {
+        return "/projects/{$this->getIndetificator()}";
+    }
+
+    public function href()
+    {
+        return route('projects.show', $this->getIndetificator());
+    }
+
+    private function getIndetificator()
+    {
+        return $this->id;
+    }
 }

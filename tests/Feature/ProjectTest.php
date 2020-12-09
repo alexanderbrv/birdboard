@@ -20,55 +20,29 @@ class ProjectTest extends TestCase
         $this->actingAs($user);
 
         // Prepare a project data
-        $project = factory(Project::class)->make();
-        $attributes = $project->toArray();
+        $projectAttributes = factory(Project::class)->raw();
 
         // Create a project
-        $this->post(route('projects.store'), $attributes)->assertRedirect(route('projects.index'));
+        $this->post(route('projects.store'), $projectAttributes)->assertRedirect(route('projects.index'));
 
         // Checks
-        $this->assertDatabaseHas('projects', $attributes);
+        $this->assertDatabaseHas('projects', $projectAttributes);
         $this->assertDatabaseHas('user_project', [
             'user_id'    => $user->id,
-            'project_id' => Project::where($attributes)->first()->id,
+            'project_id' => Project::where($projectAttributes)->first()->id,
         ]);
-        $this->get(route('projects.index'))->assertSee($attributes['title']);
+        $this->get(route('projects.index'))->assertSee($projectAttributes['title']);
     }
 
     /** @test */
-    public function a_guest_can_not_create_a_project()
+    public function a_user_can_view_a_project()
     {
-        factory(User::class)->create();
+        $this->withoutExceptionHandling();
+        $project = factory(Project::class)->create();
 
-        // Prepare a project data
-        $project = factory(Project::class)->make();
-        $attributes = $project->toArray();
-
-        // Create a project
-        $this->post(route('projects.store'), $attributes)->assertRedirect('/login');
-
-        // Checks
-        $this->assertGuest('web');
-        $this->assertDatabaseMissing('projects', $attributes);
-    }
-
-    /** @test */
-    public function a_user_can_see_a_project()
-    {
-        // Create and authenticate a user
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
-
-        // Prepare a project data
-        $project = factory(Project::class)->make();
-        $attributes = $project->toArray();
-
-        // Create a project
-        $this->post(route('projects.store'), $attributes);
-        $projectId = Project::where($attributes)->first()->id;
-
-        // Checks
-        $this->get(route('projects.show', $projectId))->assertSee($attributes['title']);
+        $this->get($project->path())
+            ->assertSee($project->title)
+            ->assertSee($project->description);
     }
 
     /** @test */
@@ -77,7 +51,6 @@ class ProjectTest extends TestCase
         // Create and authenticate a user
         $user = factory(User::class)->create();
         $this->actingAs($user);
-
 
         $attributes = factory(Project::class)->raw(['title' => '']);
 

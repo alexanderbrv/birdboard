@@ -3,7 +3,9 @@
 @section('content')
     <div class="project-wrap">
 
-        <h3>{{ $project->title }}</h3>
+        <h1>{{ $project->title }}</h1>
+
+        <div>{{ $project->description }}</div>
 
         <h5>{{ __('Tasks') }}</h5>
 
