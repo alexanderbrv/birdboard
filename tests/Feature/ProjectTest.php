@@ -13,32 +13,51 @@ class ProjectTest extends TestCase
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function a_authorized_user_can_create_a_project()
+    public function guests_cannot_create_a_project()
     {
-        // Create and authenticate a user
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $attributes = factory(Project::class)->raw();
 
-        // Prepare a project data
-        $projectAttributes = factory(Project::class)->raw();
-
-        // Create a project
-        $this->post(route('projects.store'), $projectAttributes)->assertRedirect(route('projects.index'));
-
-        // Checks
-        $this->assertDatabaseHas('projects', $projectAttributes);
-        $this->assertDatabaseHas('user_project', [
-            'user_id'    => $user->id,
-            'project_id' => Project::where($projectAttributes)->first()->id,
-        ]);
-        $this->get(route('projects.index'))->assertSee($projectAttributes['title']);
+        $this->post('/projects', $attributes)->assertRedirect('login');
     }
 
     /** @test */
-    public function a_user_can_view_a_project()
+    public function guests_cannot_view_projects()
     {
-        $this->withoutExceptionHandling();
+        $this->get(route('projects.index'))->assertRedirect('login');
+    }
+
+    /** @test */
+    public function guests_cannot_view_a_single_project()
+    {
         $project = factory(Project::class)->create();
+
+        $this->get($project->path())->assertRedirect('login');
+    }
+
+    /** @test */
+    public function a_user_can_create_a_project()
+    {
+        $this->actingAs(factory(User::class)->create());
+
+        $attributes = [
+            'title'       => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+        ];
+
+        $this->post(route('projects.store'), $attributes)->assertRedirect(route('projects.index'));
+
+        $this->assertDatabaseHas('projects', $attributes);
+        $this->get(route('projects.index'))->assertSee($attributes['title']);
+    }
+
+    /** @test */
+    public function a_user_can_view_their_project()
+    {
+        $this->actingAs(factory(User::class)->create());
+
+        $this->withoutExceptionHandling();
+
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
         $this->get($project->path())
             ->assertSee($project->title)
@@ -46,14 +65,22 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
+    public function an_authenticated_user_cannot_view_the_projects_of_others()
+    {
+        $this->actingAs(factory(User::class)->create());
+
+        $project = factory(Project::class)->create();
+
+        $this->get($project->path())->assertStatus(403);
+    }
+
+    /** @test */
     public function a_project_requires_a_title()
     {
-        // Create and authenticate a user
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->actingAs(factory(User::class)->create());
 
         $attributes = factory(Project::class)->raw(['title' => '']);
 
-        $this->post('/projects', $attributes)->assertSessionHasErrors('title');
+        $this->post(route('projects.store'), $attributes)->assertSessionHasErrors('title');
     }
 }

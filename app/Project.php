@@ -13,11 +13,11 @@ class Project extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function users()
+    public function owner()
     {
-        return $this->belongsToMany(User::class, 'user_project');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -27,6 +27,31 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accessors & Mutators
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    /**
+     * @param $value
+     * @return int
+     */
+    public function getOwnerIdAttribute($value): int
+    {
+        return (int) $value;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Shortcuts of sources
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function path()
     {

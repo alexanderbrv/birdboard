@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::resource('/projects', 'ProjectsController');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('/projects', 'ProjectsController');
+    Route::get('/home', 'HomeController@index')->name('home');
+});
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
