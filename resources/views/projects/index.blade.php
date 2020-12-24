@@ -1,23 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <div>
+    <div class="flex items-center mb-3">
+        <h5 class="mr-auto">{{ __('My Projects') }}</h5>
+        <a href="{{ route('projects.create') }}">{{ __('New Project') }}</a>
+    </div>
 
-        <div class="flex items-center mb-3">
-            <h5 class="mr-auto">{{ __('My Projects') }}</h5>
-            <a href="{{ route('projects.create') }}">{{ __('New Project') }}</a>
-        </div>
+    <div class="flex">
+        @forelse ($projects as $project)
+            <div class="bg-white mr-4 rounded p-5 shadow w-1/3" style="height: 200px;">
+                <h3 class="font-normal text-xl py-4 mb-4">{{ $project->title }}</h3>
 
-        <div class="projects-wrap">
-            @forelse($projects as $project)
-                <div class="project">
-                    <a href="{{ $project->href() }}">{{ $project->title }}</a>
-                    <div>{{ $project->description }}</div>
+                <div class="text-grey">
+                    {{ Str::limit($project->description, 100) }}
                 </div>
-            @empty
-                <div>Not projects yet.</div>
-            @endforelse
-        </div>
-
+            </div>
+        @empty
+            <div>No projects yet.</div>
+        @endforelse
     </div>
 @endsection
