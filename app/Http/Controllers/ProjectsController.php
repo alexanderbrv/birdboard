@@ -43,7 +43,9 @@ class ProjectsController extends Controller
             'notes'       => 'nullable|string',
         ]);
 
-        auth()->user()->projects()->create($attributes);
+        $project = auth()->user()->projects()->create($attributes);
+
+        $project->addTask();
 
         return redirect()->route('projects.index');
     }
@@ -60,10 +62,9 @@ class ProjectsController extends Controller
             abort(403);
         }
 
-        return view('projects.show')->with([
-            'project' => $project,
-            'tasks'   => $project->tasks,
-        ]);
+        $project->load('tasks');
+
+        return view('projects.show')->with(compact('project'));
     }
 
     /**

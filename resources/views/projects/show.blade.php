@@ -16,10 +16,11 @@
         <div class="lg:flex -mx-3">
             <div class="lg:w-3/4 px-3 mb-6">
                 <div class="mb-8">
-                    <div class="card mb-3">Tasks</div>
-                    <div class="card mb-3">Tasks</div>
-                    <div class="card mb-3">Tasks</div>
-                    <div class="card">Tasks</div>
+                    @forelse($project->tasks as $task)
+                        <div class="card mb-3">{{ $task->body }}</div>
+                    @empty
+                        <div>Still empty.</div>
+                    @endforelse
                 </div>
 
                 <div class="mb-6">

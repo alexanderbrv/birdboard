@@ -36,6 +36,17 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 
+    /**
+     * @param null $body
+     * @return Model
+     */
+    public function addTask($body = null)
+    {
+        if ($body) {
+            return $this->tasks()->create(compact('body'));
+        }
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -67,6 +78,14 @@ class Project extends Model
     public function path(): string
     {
         return "/projects/{$this->getIndetificator()}";
+    }
+
+    /**
+     * @return string
+     */
+    public function pathToAddTask(): string
+    {
+        return $this->path() . '/tasks';
     }
 
     /**

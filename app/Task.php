@@ -7,10 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'title',
+        'body',
         'finished',
         'due',
     ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    |
+    */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
