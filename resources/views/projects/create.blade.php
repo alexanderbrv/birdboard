@@ -5,7 +5,7 @@
         <form method="POST" action="{{ route('projects.store') }}">
             @csrf
 
-            <h6>{{ __('Create a Project') }}</h6>
+            <h6 class="title">{{ __('Create a Project') }}</h6>
 
             <div class="input-group mb-3">
                 <input name="title" type="text" class="form-control" placeholder="Title">

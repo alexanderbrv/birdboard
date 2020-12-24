@@ -99,8 +99,8 @@ let colors = {
   'blue-darkest': '#12283a',
   'blue-darker': '#1c3d5a',
   'blue-dark': '#2779bd',
-  'blue': '#3490dc',
-  'blue-light': '#6cb2eb',
+  'blue': '#47cdff',
+  'blue-light': '#8ae2fe',
   'blue-lighter': '#bcdefa',
   'blue-lightest': '#eff8ff',
 
@@ -588,6 +588,7 @@ module.exports = {
 
   minHeight: {
     '0': '0',
+    '200': '200px',
     'full': '100%',
     'screen': '100vh',
   },

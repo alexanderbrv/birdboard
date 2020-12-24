@@ -23,10 +23,12 @@
 <div id="app">
     <nav class="bg-white">
         <div class="container mx-auto">
-            <div class="flex justify-between items-center py-3">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
+            <div class="flex justify-between items-center py-2">
+                <h1>
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}">
+                    </a>
+                </h1>
 
                 <div>
                     <!-- Right Side Of Navbar -->
@@ -66,9 +68,9 @@
         </div>
     </nav>
 
-    <main class="container mx-auto py-4">
+    <section class="container section">
         @yield('content')
-    </main>
+    </section>
 </div>
 </body>
 </html>
