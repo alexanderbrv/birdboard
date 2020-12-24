@@ -12,6 +12,14 @@ class Project extends Model
         'notes',
     ];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    |
+    */
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -53,18 +61,27 @@ class Project extends Model
     |
     */
 
-    public function path()
+    /**
+     * @return string
+     */
+    public function path(): string
     {
         return "/projects/{$this->getIndetificator()}";
     }
 
-    public function href()
+    /**
+     * @return string
+     */
+    public function href(): string
     {
         return route('projects.show', $this->getIndetificator());
     }
 
-    private function getIndetificator()
+    /**
+     * @return int
+     */
+    private function getIndetificator(): int
     {
-        return $this->id;
+        return (int) $this->id;
     }
 }

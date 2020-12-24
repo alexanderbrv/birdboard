@@ -10,9 +10,13 @@
         <h5>{{ __('Tasks') }}</h5>
 
         <ul>
-            @foreach($tasks as $task)
+            @forelse($tasks as $task)
                 <li>{{ $task->title }}</li>
-            @endforeach
+            @empty
+                <li>{{ __('Not added yet') }}</li>
+            @endforelse
         </ul>
+
+        <a href="{{ route('projects.index') }}">{{ __('Go Back') }}</a>
     </div>
 @endsection
