@@ -12,6 +12,8 @@ class Task extends Model
         'due',
     ];
 
+    protected $touches = ['project'];
+
 
     /*
     |--------------------------------------------------------------------------
