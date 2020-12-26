@@ -16,7 +16,7 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function guests_cannot_add_a_task()
     {
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $this->post($project->pathToAddTask(), ['body' => 'Test task'])->assertRedirect('login');
     }
@@ -26,7 +26,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $testArr = ['body' => 'Test task'];
 
@@ -40,7 +40,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
         $task = $project->addTask('test task');
 
         $testArr = [
@@ -58,7 +58,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = $this->createProject(true);
 
         $testStr = 'Test task';
 
@@ -73,7 +73,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = $this->createProject(true);
 
         $task = $project->addTask('new task');
 
@@ -92,7 +92,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = $this->createProject(true);
 
         $attributes = factory(Task::class)->raw(['body' => '']);
 

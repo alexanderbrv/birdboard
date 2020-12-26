@@ -15,7 +15,7 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function guests_cannot_manage_projects()
     {
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $this->get(route('projects.index'))->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
@@ -49,7 +49,7 @@ class ManageProjectsTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = $this->createProject(true);
 
         $this->get($project->path())
             ->assertSee($project->title);
@@ -60,7 +60,7 @@ class ManageProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $this->get($project->path())->assertStatus(403);
     }

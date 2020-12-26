@@ -14,7 +14,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_has_a_path()
     {
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $this->assertEquals('/projects/' . $project->id, $project->path());
     }
@@ -22,7 +22,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_belongs_to_a_user()
     {
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $this->assertInstanceOf(User::class, $project->owner);
     }
@@ -30,7 +30,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_can_add_a_task()
     {
-        $project = factory(Project::class)->create();
+        $project = $this->createProject();
 
         $task = $project->addTask('Body');
 
