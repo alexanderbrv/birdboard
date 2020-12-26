@@ -6,6 +6,7 @@ use App\Project;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ManageProjectsTest extends TestCase
@@ -21,6 +22,18 @@ class ManageProjectsTest extends TestCase
         $this->get($project->path())->assertRedirect('login');
         $this->get(route('projects.create'))->assertRedirect('login');
         $this->post('/projects', $project->toArray())->assertRedirect('login');
+        $this->patch($project->path(), [])->assertRedirect('login');
+    }
+
+    /** @test */
+    public function an_authenticated_user_cannot_manage_the_projects_of_others()
+    {
+        $this->signIn();
+
+        $project = $this->createProject();
+
+        $this->get($project->path())->assertStatus(403);
+        $this->patch($project->path(), [])->assertStatus(403);
     }
 
     /** @test */
@@ -32,14 +45,36 @@ class ManageProjectsTest extends TestCase
 
         $attributes = [
             'title'       => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->sentence,
+            'notes'       => 'General notes.',
         ];
 
-        $this->post(route('projects.store'), $attributes)
-            ->assertRedirect(Project::where($attributes)->first()->path());
+        $response = $this->post(route('projects.store'), $attributes);
+
+        $project = Project::where($attributes)->first();
+
+        $response->assertRedirect($project->path());
+
+        $this->get($project->path())
+            ->assertSee($attributes['title'])
+            ->assertSee($attributes['notes'])
+            ->assertSee($attributes['description']);
+        $this->assertDatabaseHas('projects', $attributes);
+    }
+
+    /** @test */
+    public function a_user_can_update_a_project()
+    {
+        $this->signIn();
+
+        $project = $this->createProject(true, ['notes' => 'General notes.']);
+
+        $attributes = ['notes' => 'Updated notes.'];
+
+        $this->patch($project->path(), $attributes)
+            ->assertRedirect($project->path());
 
         $this->assertDatabaseHas('projects', $attributes);
-        $this->get(route('projects.index'))->assertSee($attributes['title']);
     }
 
     /** @test */
@@ -53,16 +88,6 @@ class ManageProjectsTest extends TestCase
 
         $this->get($project->path())
             ->assertSee($project->title);
-    }
-
-    /** @test */
-    public function an_authenticated_user_cannot_view_the_projects_of_others()
-    {
-        $this->signIn();
-
-        $project = $this->createProject();
-
-        $this->get($project->path())->assertStatus(403);
     }
 
     /** @test */

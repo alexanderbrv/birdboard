@@ -17,12 +17,16 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param bool $authUserIsOwner
+     * @param array $attributes
      * @return Project
      */
-    protected function createProject($authUserIsOwner = false): Project
+    protected function createProject(bool $authUserIsOwner = false, array $attributes = []): Project
     {
         return factory(Project::class)->create(
-            $authUserIsOwner ? ['owner_id' => auth()->id()] : []
+            array_merge(
+                $attributes,
+                $authUserIsOwner ? ['owner_id' => auth()->id()] : []
+            )
         );
     }
 }

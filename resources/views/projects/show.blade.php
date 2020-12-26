@@ -40,7 +40,19 @@
 
                 <div class="mb-6">
                     <h6 class="title mb-3">{{ __('General Notes') }}</h6>
-                    <textarea class="card w-full min-h-200" placeholder="Add notes"></textarea>
+
+                    <form method="POST" action="{{ $project->path() }}">
+                        @csrf
+                        @method('PATCH')
+
+                        <textarea
+                            name="notes"
+                            class="card w-full min-h-200 mb-3"
+                            placeholder="Anything special that you want to make a note off?"
+                        >{{ $project->notes }}</textarea>
+
+                        <button type="submit" class="button">Save</button>
+                    </form>
                 </div>
             </div>
 
