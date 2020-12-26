@@ -27,4 +27,17 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Shortcuts of sources
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function path()
+    {
+        return "/projects/{$this->project_id}/tasks/{$this->id}";
+    }
 }

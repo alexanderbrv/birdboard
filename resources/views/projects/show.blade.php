@@ -16,11 +16,26 @@
         <div class="lg:flex -mx-3">
             <div class="lg:w-3/4 px-3 mb-6">
                 <div class="mb-8">
-                    @forelse($project->tasks as $task)
-                        <div class="card mb-3">{{ $task->body }}</div>
-                    @empty
-                        <div>Still empty.</div>
-                    @endforelse
+                    @foreach($project->tasks as $task)
+                        <div class="card mb-3">
+                            <form method="POST" action="{{ $task->path() }}">
+                                @method('PATCH')
+                                @csrf
+
+                                <div class="flex">
+                                    <input type="text" name="body" value="{{ $task->body }}" class="w-full {{ $task->finished ? 'text-grey' : ''}}">
+                                    <input type="checkbox" name="finished" onchange="this.form.submit()" {{ $task->finished ? 'checked' : ''}}>
+                                </div>
+                            </form>
+                        </div>
+                    @endforeach
+
+                    <div class="card">
+                        <form action="{{ $project->pathToAddTask() }}" method="POST">
+                            @csrf
+                            <input name="body" placeholder="Add a new task" class="w-full">
+                        </form>
+                    </div>
                 </div>
 
                 <div class="mb-6">

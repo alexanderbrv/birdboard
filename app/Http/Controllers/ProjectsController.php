@@ -47,7 +47,7 @@ class ProjectsController extends Controller
 
         $project->addTask();
 
-        return redirect()->route('projects.index');
+        return redirect($project->path());
     }
 
     /**

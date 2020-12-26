@@ -14,6 +14,46 @@ class ProjectTasksTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function guests_cannot_add_a_task()
+    {
+        $project = factory(Project::class)->create();
+
+        $this->post($project->pathToAddTask(), ['body' => 'Test task'])->assertRedirect('login');
+    }
+
+    /** @test */
+    public function only_the_owner_of_a_project_can_add_tasks()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create();
+
+        $testArr = ['body' => 'Test task'];
+
+        $this->post($project->pathToAddTask(), $testArr)
+            ->assertStatus(403);
+        $this->assertDatabaseMissing('tasks', $testArr);
+    }
+
+    /** @test */
+    public function only_the_owner_of_a_project_can_update_a_task()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create();
+        $task = $project->addTask('test task');
+
+        $testArr = [
+            'body'     => 'Test task',
+            'finished' => true,
+        ];
+
+        $this->patch($task->path(), $testArr)->assertStatus(403);
+
+        $this->assertDatabaseMissing('tasks', $testArr);
+    }
+
+    /** @test */
     public function a_project_can_have_a_task()
     {
         $this->signIn();
@@ -26,6 +66,25 @@ class ProjectTasksTest extends TestCase
 
         $this->get($project->path())
             ->assertSee($testStr);
+    }
+
+    /** @test */
+    public function a_task_can_be_updated()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+
+        $task = $project->addTask('new task');
+
+        $testArr = [
+            'body'     => 'updated',
+            'finished' => true,
+        ];
+
+        $this->patch($task->path(), $testArr);
+
+        $this->assertDatabaseHas('tasks', $testArr);
     }
 
     /** @test */
