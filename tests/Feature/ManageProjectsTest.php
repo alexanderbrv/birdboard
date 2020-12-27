@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use App\Project;
-use App\User;
+use Facades\Tests\Arrangements\ProjectArrangement;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ManageProjectsTest extends TestCase
@@ -16,7 +15,7 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function guests_cannot_manage_projects()
     {
-        $project = $this->createProject();
+        $project = ProjectArrangement::create();
 
         $this->get(route('projects.index'))->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
@@ -30,10 +29,10 @@ class ManageProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $project = $this->createProject();
+        $project = ProjectArrangement::create();
 
         $this->get($project->path())->assertStatus(403);
-        $this->patch($project->path(), [])->assertStatus(403);
+        $this->patch($project->path())->assertStatus(403);
     }
 
     /** @test */
@@ -59,19 +58,17 @@ class ManageProjectsTest extends TestCase
             ->assertSee($attributes['title'])
             ->assertSee($attributes['notes'])
             ->assertSee($attributes['description']);
-        $this->assertDatabaseHas('projects', $attributes);
     }
 
     /** @test */
     public function a_user_can_update_a_project()
     {
-        $this->signIn();
-
-        $project = $this->createProject(true, ['notes' => 'General notes.']);
+        $project = ProjectArrangement::create(['notes' => 'General notes.']);
 
         $attributes = ['notes' => 'Updated notes.'];
 
-        $this->patch($project->path(), $attributes)
+        $this->actingAs($project->owner)
+            ->patch($project->path(), $attributes)
             ->assertRedirect($project->path());
 
         $this->assertDatabaseHas('projects', $attributes);
@@ -80,23 +77,20 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_view_their_project()
     {
-        $this->signIn();
+        $project = ProjectArrangement::create();
 
-        $this->withoutExceptionHandling();
-
-        $project = $this->createProject(true);
-
-        $this->get($project->path())
+        $this->actingAs($project->owner)
+            ->get($project->path())
             ->assertSee($project->title);
     }
 
     /** @test */
     public function a_project_requires_a_title()
     {
-        $this->signIn();
-
         $attributes = factory(Project::class)->raw(['title' => '']);
 
-        $this->post(route('projects.store'), $attributes)->assertSessionHasErrors('title');
+        $this->signIn()
+            ->post(route('projects.store'), $attributes)
+            ->assertSessionHasErrors('title');
     }
 }

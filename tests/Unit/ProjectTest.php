@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Project;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Facades\Tests\Arrangements\ProjectArrangement;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
@@ -14,7 +14,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_has_a_path()
     {
-        $project = $this->createProject();
+        $project = ProjectArrangement::create();
 
         $this->assertEquals('/projects/' . $project->id, $project->path());
     }
@@ -22,7 +22,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_belongs_to_a_user()
     {
-        $project = $this->createProject();
+        $project = ProjectArrangement::create();
 
         $this->assertInstanceOf(User::class, $project->owner);
     }
@@ -30,7 +30,7 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_can_add_a_task()
     {
-        $project = $this->createProject();
+        $project = ProjectArrangement::create();
 
         $task = $project->addTask('Body');
 
