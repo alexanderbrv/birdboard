@@ -2,24 +2,15 @@
 
 @section('content')
     <div class="card">
+
+        <h1 class="title text-center">{{ __('Create a Project') }}</h1>
+
         <form method="POST" action="{{ route('projects.store') }}">
-            @csrf
-
-            <h6 class="title">{{ __('Create a Project') }}</h6>
-
-            <div class="mt-3">
-                <input name="title" type="text" class="w-full border p-3" placeholder="My next awesome project">
-            </div>
-
-            <div class="mt-2">
-                <textarea name="description" class="w-full border p-3" placeholder="{{ __('Description') }}"></textarea>
-            </div>
-
-            <div class="mt-3">
-                <button type="submit" class="button">Create Project</button>
-
-                <a href="{{ route('projects.index') }}">Cancel</a>
-            </div>
+            @include('projects.parts.form', [
+                'project' => new \App\Project(),
+                'buttonText' => 'Create Project',
+                'linkAfterCancel' => route('projects.index'),
+            ])
         </form>
     </div>
 @endsection

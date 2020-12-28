@@ -89,14 +89,6 @@ class Project extends Model
     }
 
     /**
-     * @return string
-     */
-    public function href(): string
-    {
-        return route('projects.show', $this->getIndetificator());
-    }
-
-    /**
      * @return int
      */
     private function getIndetificator(): int

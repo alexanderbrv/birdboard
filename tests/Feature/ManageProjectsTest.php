@@ -19,6 +19,7 @@ class ManageProjectsTest extends TestCase
 
         $this->get(route('projects.index'))->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
+        $this->get("{$project->path()}/edit")->assertRedirect('login');
         $this->get(route('projects.create'))->assertRedirect('login');
         $this->post('/projects', $project->toArray())->assertRedirect('login');
         $this->patch($project->path(), [])->assertRedirect('login');
@@ -32,7 +33,8 @@ class ManageProjectsTest extends TestCase
         $project = ProjectArrangement::create();
 
         $this->get($project->path())->assertStatus(403);
-        $this->patch($project->path())->assertStatus(403);
+        $this->get("{$project->path()}/edit")->assertStatus(403);
+        $this->patch($project->path(), ['title' => 'title'])->assertStatus(403);
     }
 
     /** @test */
@@ -40,7 +42,7 @@ class ManageProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $this->get(route('projects.create'))->assertStatus(200);
+        $this->get(route('projects.create'))->assertOk();
 
         $attributes = [
             'title'       => $this->faker->sentence,
@@ -65,12 +67,16 @@ class ManageProjectsTest extends TestCase
     {
         $project = ProjectArrangement::create(['notes' => 'General notes.']);
 
-        $attributes = ['notes' => 'Updated notes.'];
+        $attributes = [
+            'notes'       => 'Updated notes.',
+            'title'       => 'Updated title.',
+            'description' => 'Updated description',
+        ];
 
-        $this->actingAs($project->owner)
-            ->patch($project->path(), $attributes)
-            ->assertRedirect($project->path());
+        $this->signIn($project->owner);
 
+        $this->get("{$project->path()}/edit")->assertOk();
+        $this->patch($project->path(), $attributes)->assertRedirect($project->path());
         $this->assertDatabaseHas('projects', $attributes);
     }
 

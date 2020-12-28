@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -32,16 +33,12 @@ class ProjectsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  ProjectRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $attributes = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'notes'       => 'nullable|string',
-        ]);
+        $attributes = $request->validated();
 
         $project = auth()->user()->projects()->create($attributes);
 
@@ -69,26 +66,32 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param Project $project
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+
+        return view('projects.edit')->with(compact('project'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Project $project
+     * @param ProjectRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Project $project)
+    public function update(Project $project, ProjectRequest $request)
     {
         $this->authorize('update', $project);
 
-        $project->update(request(['notes']));
+        $attributes = $request->validated();
+
+        $project->update($attributes);
 
         return redirect($project->path());
     }

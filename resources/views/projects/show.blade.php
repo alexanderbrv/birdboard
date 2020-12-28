@@ -7,7 +7,7 @@
             / {{ $project->title }}
         </h2>
 
-        <a href="{{ route('projects.create') }}" class="button">{{ __('New Project') }}</a>
+        <a href="{{ route('projects.edit', $project->id) }}" class="button">{{ __('Update Project') }}</a>
     </header>
 
     <main>
