@@ -1,28 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <div>
+    <div class="card">
         <form method="POST" action="{{ route('projects.store') }}">
             @csrf
 
             <h6 class="title">{{ __('Create a Project') }}</h6>
 
-            <div class="input-group mb-3">
-                <input name="title" type="text" class="form-control" placeholder="Title">
+            <div class="mt-3">
+                <input name="title" type="text" class="w-full border p-3" placeholder="My next awesome project">
             </div>
 
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Description</span>
-                </div>
-                <textarea name="description" class="form-control" aria-label="With textarea"></textarea>
+            <div class="mt-2">
+                <textarea name="description" class="w-full border p-3" placeholder="{{ __('Description') }}"></textarea>
             </div>
 
             <div class="mt-3">
-                <button type="submit" class="btn btn-outline-secondary">Create Project</button>
+                <button type="submit" class="button">Create Project</button>
+
                 <a href="{{ route('projects.index') }}">Cancel</a>
             </div>
-
         </form>
     </div>
 @endsection
