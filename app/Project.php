@@ -12,6 +12,10 @@ class Project extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'owner_id' => 'integer',
+    ];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -37,6 +41,14 @@ class Project extends Model
     }
 
     /**
+     * @param $type
+     */
+    public function recordActivity($type)
+    {
+        $this->activity()->create(['description' => $type]);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tasks()
@@ -58,23 +70,6 @@ class Project extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Accessors & Mutators
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    /**
-     * @param $value
-     * @return int
-     */
-    public function getOwnerIdAttribute($value): int
-    {
-        return (int) $value;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
     | Shortcuts of sources
     |--------------------------------------------------------------------------
     |
@@ -85,7 +80,7 @@ class Project extends Model
      */
     public function path(): string
     {
-        return "/projects/{$this->getIndetificator()}";
+        return "/projects/{$this->getIdentificator()}";
     }
 
     /**
@@ -99,7 +94,7 @@ class Project extends Model
     /**
      * @return int
      */
-    private function getIndetificator(): int
+    private function getIdentificator(): int
     {
         return (int) $this->id;
     }

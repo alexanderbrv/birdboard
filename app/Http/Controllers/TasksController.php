@@ -28,10 +28,11 @@ class TasksController extends Controller
             'finished' => 'nullable|boolean',
         ]);
 
-        $task->update([
-            'body'     => request('body'),
-            'finished' => request()->has('finished'),
-        ]);
+        $task->update(['body' => request('body')]);
+
+        if (request()->has('finished')) {
+            $task->complete();
+        }
 
         return redirect($project->path());
     }

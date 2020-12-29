@@ -14,7 +14,7 @@ class ProjectObserver
      */
     public function created(Project $project)
     {
-        $this->recordActivity('created', $project);
+        $project->recordActivity('created');
     }
 
     /**
@@ -25,15 +25,6 @@ class ProjectObserver
      */
     public function updated(Project $project)
     {
-        $this->recordActivity('updated', $project);
-    }
-
-    /**
-     * @param $type
-     * @param $project
-     */
-    private function recordActivity($type, $project)
-    {
-        $project->activity()->create(['description' => $type]);
+        $project->recordActivity('updated');
     }
 }
