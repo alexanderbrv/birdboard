@@ -16,5 +16,13 @@ class ProjectSeeder extends Seeder
                 'project_id' => $project->id,
             ]);
         });
+
+        factory(\App\Project::class, 5)->create(
+            ['owner_id' => \App\User::first()]
+        )->each(function ($project) {
+            factory(\App\Task::class, 4)->create([
+                'project_id' => $project->id,
+            ]);
+        });
     }
 }
