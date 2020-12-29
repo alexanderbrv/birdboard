@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Task;
-use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
@@ -29,9 +28,7 @@ class TasksController extends Controller
 
         $task->update($attributes);
 
-        $method = request('finished') ? 'complete' : 'incomplete';
-
-        $task->$method();
+        request('finished') ? $task->complete() : $task->incomplete();
 
         return redirect($project->path());
     }

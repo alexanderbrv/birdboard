@@ -16,7 +16,6 @@ class Project extends Model
         'owner_id' => 'integer',
     ];
 
-
     /*
     |--------------------------------------------------------------------------
     | Relationships
@@ -66,7 +65,6 @@ class Project extends Model
             return $this->tasks()->create(compact('body'));
         }
     }
-
 
     /*
     |--------------------------------------------------------------------------

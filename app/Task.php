@@ -16,16 +16,6 @@ class Task extends Model
 
     protected $casts = ['finished' => 'boolean'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($task) {
-            $task->project->recordActivity('created_task');
-        });
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Relationships
@@ -41,7 +31,6 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Shortcuts of sources
@@ -53,7 +42,6 @@ class Task extends Model
     {
         return "/projects/{$this->project_id}/tasks/{$this->id}";
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -72,5 +60,7 @@ class Task extends Model
     public function incomplete()
     {
         $this->update(['finished' => false]);
+
+        $this->project->recordActivity('incompleted_task');
     }
 }
