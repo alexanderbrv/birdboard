@@ -53,6 +53,8 @@
 
                         <button type="submit" class="button">Save</button>
                     </form>
+
+                    @include('projects.parts.validation-errors')
                 </div>
             </div>
 

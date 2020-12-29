@@ -80,20 +80,12 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Project $project
-     * @param ProjectRequest $request
+     * @param ProjectRequest $form
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Project $project, ProjectRequest $request)
+    public function update(ProjectRequest $form)
     {
-        $this->authorize('update', $project);
-
-        $attributes = $request->validated();
-
-        $project->update($attributes);
-
-        return redirect($project->path());
+        return redirect($form->save()->path());
     }
 
     /**
