@@ -1,1 +1,1 @@
-You updated a Project
+You updated "{{ $activity->subject->body }}"

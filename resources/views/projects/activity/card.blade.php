@@ -8,7 +8,7 @@
                     {{ $activity->description }}
                 @endif
 
-                <span class="text-grey">{{ $activity->created_at->diffForHumans(null, Carbon\CarbonInterface::DIFF_ABSOLUTE) }}</span>
+                <div class="text-grey">{{ $activity->created_at->diffForHumans(null, Carbon\CarbonInterface::DIFF_ABSOLUTE) }}</div>
             </li>
         @endforeach
     </ul>
