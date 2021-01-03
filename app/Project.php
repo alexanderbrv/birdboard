@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Project extends Model
 {
@@ -15,6 +16,8 @@ class Project extends Model
     protected $casts = [
         'owner_id' => 'integer',
     ];
+
+    public $old;
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +47,24 @@ class Project extends Model
      */
     public function recordActivity($description)
     {
-        $this->activity()->create(compact('description'));
+        $this->activity()->create([
+            'description' => $description,
+            'changes'     => $this->activityChanges($description),
+        ]);
+
+        //$this->getChanges();
+    }
+
+    public function activityChanges($description = null)
+    {
+        if ($description !== 'updated') {
+            return null;
+        }
+
+        return [
+            'after'  => Arr::except(array_diff($this->old, $this->getAttributes()), ['created_at', 'updated_at']),
+            'before' => Arr::except($this->getChanges(), ['created_at', 'updated_at']),
+        ];
     }
 
     /**
