@@ -6,6 +6,10 @@ use App\Project;
 
 class ProjectObserver
 {
+    static public $before;
+
+    public $after;
+
     /**
      * Handle the project "created" event.
      *
