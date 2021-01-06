@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
 class Project extends Model
 {
+    use RecordsActivity;
+
     protected $fillable = [
         'title',
         'description',
@@ -16,8 +18,6 @@ class Project extends Model
     protected $casts = [
         'owner_id' => 'integer',
     ];
-
-    public $old;
 
     /*
     |--------------------------------------------------------------------------
@@ -40,29 +40,6 @@ class Project extends Model
     public function activity()
     {
         return $this->hasMany(Activity::class)->latest();
-    }
-
-    /**
-     * @param $description
-     */
-    public function recordActivity($description)
-    {
-        $this->activity()->create([
-            'description' => $description,
-            'changes'     => $this->activityChanges($description),
-        ]);
-    }
-
-    public function activityChanges($description = null)
-    {
-        if ($description !== 'updated') {
-            return null;
-        }
-
-        return [
-            'after'  => Arr::except(array_diff($this->old, $this->getAttributes()), ['created_at', 'updated_at']),
-            'before' => Arr::except($this->getChanges(), ['created_at', 'updated_at']),
-        ];
     }
 
     /**

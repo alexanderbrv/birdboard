@@ -2,19 +2,31 @@
 
 namespace App;
 
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    use RecordsActivity;
+
+    static protected $recordableEvents = [
+        'created',
+        'deleted',
+    ];
+
     protected $fillable = [
         'body',
         'finished',
         'due',
     ];
 
-    protected $touches = ['project'];
+    protected $touches = [
+        'project',
+    ];
 
-    protected $casts = ['finished' => 'boolean'];
+    protected $casts = [
+        'finished' => 'boolean',
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -29,25 +41,6 @@ class Task extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function activity()
-    {
-        return $this->morphMany(Activity::class, 'subject')->latest();
-    }
-
-    /**
-     * @param $description
-     */
-    public function recordActivity($description)
-    {
-        $this->activity()->create([
-            'description' => $description,
-            'project_id'  => $this->project_id,
-        ]);
     }
 
     /*
