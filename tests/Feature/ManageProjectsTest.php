@@ -23,6 +23,7 @@ class ManageProjectsTest extends TestCase
         $this->get(route('projects.create'))->assertRedirect('login');
         $this->post('/projects', $project->toArray())->assertRedirect('login');
         $this->patch($project->path(), [])->assertRedirect('login');
+        $this->delete($project->path())->assertRedirect('login');
     }
 
     /** @test */
@@ -35,6 +36,7 @@ class ManageProjectsTest extends TestCase
         $this->get($project->path())->assertStatus(403);
         $this->get("{$project->path()}/edit")->assertStatus(403);
         $this->patch($project->path(), ['title' => 'title'])->assertStatus(403);
+        $this->delete($project->path())->assertStatus(403);
     }
 
     /** @test */
@@ -78,6 +80,18 @@ class ManageProjectsTest extends TestCase
         $this->get("{$project->path()}/edit")->assertOk();
         $this->patch($project->path(), $attributes)->assertRedirect($project->path());
         $this->assertDatabaseHas('projects', $attributes);
+    }
+
+    /** @test */
+    public function a_user_can_delete_a_project()
+    {
+        $project = ProjectArrangement::create();
+
+        $this->actingAs($project->owner)
+            ->delete($project->path())
+            ->assertRedirect('projects');
+
+        $this->assertDatabaseMissing('projects', $project->only('id'));
     }
 
     /** @test */

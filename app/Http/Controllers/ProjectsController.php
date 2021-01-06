@@ -90,11 +90,16 @@ class ProjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+
+        $project->delete();
+
+        return redirect()->route('projects.index');
     }
 }
