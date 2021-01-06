@@ -106,8 +106,9 @@ class ManageProjectsTest extends TestCase
     {
         $attributes = factory(Project::class)->raw(['title' => '']);
 
-        $this->signIn()
-            ->post(route('projects.store'), $attributes)
+        $this->signIn();
+
+        $this->post(route('projects.store'), $attributes)
             ->assertSessionHasErrors('title');
     }
 }

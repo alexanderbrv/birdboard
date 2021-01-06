@@ -1,1 +1,1 @@
-You completed "{{ $activity->subject->body }}"
+@include('projects.activity.user_name') completed "{{ $activity->subject->body }}"

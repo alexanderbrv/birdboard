@@ -2,7 +2,7 @@
     <ul class="text-sm list-reset">
         @foreach($project->activity as $activity)
             <li class="{{ $loop->last ? '' : 'mb-2 pb-2 border-b' }}">
-                @if (View::exists("projects.activity.{$activity->description}"))
+                @if (\Illuminate\Support\Facades\View::exists("projects.activity.{$activity->description}"))
                     @include ("projects.activity.{$activity->description}")
                 @else
                     {{ $activity->description }}

@@ -44,8 +44,9 @@ class ProjectTasksTest extends TestCase
             'finished' => true,
         ];
 
-        $this->signIn()
-            ->patch($project->tasks[0]->path(), $testArr)
+        $this->signIn();
+
+        $this->patch($project->tasks[0]->path(), $testArr)
             ->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', $testArr);

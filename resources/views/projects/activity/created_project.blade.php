@@ -1,1 +1,1 @@
-You created a new project
+@include('projects.activity.user_name') created a new project

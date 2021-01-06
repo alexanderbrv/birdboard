@@ -16,13 +16,20 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('user_id');
             $table->nullableMorphs('subject');
             $table->string('description');
             $table->json('changes')->nullable();
             $table->timestamps();
 
+            $table->foreign('user_id')
+                ->on('users')
+                ->references('id')
+                ->onDelete('cascade');
+
             $table->foreign('project_id')
-                ->on('projects')->references('id')
+                ->on('projects')
+                ->references('id')
                 ->onDelete('cascade');
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Activity;
+use App\User;
 use Illuminate\Support\Arr;
 
 trait RecordsActivity
@@ -83,10 +84,23 @@ trait RecordsActivity
     public function recordActivity($description)
     {
         $this->activity()->create([
+            'user_id'     => $this->activityOwner()->id,
             'description' => $description,
             'changes'     => $this->activityChanges(),
             'project_id'  => class_basename($this) === 'Project' ? $this->id : $this->project_id,
         ]);
+    }
+
+    /**
+     * @return User
+     */
+    protected function activityOwner(): User
+    {
+        if (auth()->check()) {
+            return auth()->user();
+        }
+
+        return ($this->project ?? $this)->owner;
     }
 
     /**

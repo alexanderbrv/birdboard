@@ -1,1 +1,1 @@
-You uncompleted "{{ $activity->subject->body }}"
+@include('projects.activity.user_name') uncompleted "{{ $activity->subject->body }}"
