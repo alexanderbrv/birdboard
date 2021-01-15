@@ -116,6 +116,14 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_see_all_projects_they_have_been_invited_to_on_their_dashboard()
+    {
+        $project = tap(ProjectArrangement::create())->invite($this->signIn());
+
+        $this->get(route('projects.index'))->assertSee($project->title);
+    }
+
+    /** @test */
     public function a_project_requires_a_title()
     {
         $attributes = factory(Project::class)->raw(['title' => '']);

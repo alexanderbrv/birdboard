@@ -19,6 +19,13 @@ class ProjectArrangement
         return $this;
     }
 
+    public function ownedByNewUser()
+    {
+        $this->user = null;
+
+        return $this;
+    }
+
     /**
      * @param int $count
      * @return ProjectArrangement
