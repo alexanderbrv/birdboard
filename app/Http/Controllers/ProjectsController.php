@@ -55,7 +55,7 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        $this->authorize('update', $project);
+        $this->authorize('author-or-member', $project);
 
         $project->load('tasks');
 
@@ -71,7 +71,7 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        $this->authorize('update', $project);
+        $this->authorize('author-or-member', $project);
 
         return view('projects.edit')->with(compact('project'));
     }
@@ -96,7 +96,7 @@ class ProjectsController extends Controller
      */
     public function destroy(Project $project)
     {
-        $this->authorize('update', $project);
+        $this->authorize('author-or-member', $project);
 
         $project->delete();
 

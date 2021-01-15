@@ -50,6 +50,18 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'project_members');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | //
+    |--------------------------------------------------------------------------
+    |
+    */
+
     /**
      * @param null $body
      * @return Model
@@ -59,6 +71,14 @@ class Project extends Model
         if ($body) {
             return $this->tasks()->create(compact('body'));
         }
+    }
+
+    /**
+     * @param User $user
+     */
+    public function invite(User $user)
+    {
+        return $this->members()->attach($user);
     }
 
     /*
