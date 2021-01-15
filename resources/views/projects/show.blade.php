@@ -7,7 +7,15 @@
             / {{ $project->title }}
         </h2>
 
-        <a href="{{ route('projects.edit', $project->id) }}" class="button">{{ __('Update Project') }}</a>
+        <div class="flex items-center">
+            @foreach ($project->members->push($project->owner) as $member)
+                <img src="{{ gravatar_url($member->email) }}"
+                     alt="{{ $member->name }}'s avatar"
+                     class="rounded-full w-10 mr-2 @if($member->id === $project->owner_id) border-2 border-blue-light @endif">
+            @endforeach
+            
+            <a href="{{ route('projects.edit', $project->id) }}" class="button ml-4">{{ __('Update Project') }}</a>
+        </div>
     </header>
 
     <main>
