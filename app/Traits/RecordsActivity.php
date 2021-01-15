@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Activity;
-use App\User;
+use App\Models\Activity;
+use App\Models\User;
 use Illuminate\Support\Arr;
 
 trait RecordsActivity

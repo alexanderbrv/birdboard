@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Task;
+use App\Models\Task;
 use Facades\Tests\Arrangements\ProjectArrangement;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

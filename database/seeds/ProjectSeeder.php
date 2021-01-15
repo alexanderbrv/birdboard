@@ -11,16 +11,16 @@ class ProjectSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Project::class, 5)->create()->each(function ($project) {
-            factory(\App\Task::class, 4)->create([
+        factory(\App\Models\Project::class, 5)->create()->each(function ($project) {
+            factory(\App\Models\Task::class, 4)->create([
                 'project_id' => $project->id,
             ]);
         });
 
-        factory(\App\Project::class, 5)->create(
-            ['owner_id' => \App\User::first()]
+        factory(\App\Models\Project::class, 5)->create(
+            ['owner_id' => \App\Models\User::first()]
         )->each(function ($project) {
-            factory(\App\Task::class, 4)->create([
+            factory(\App\Models\Task::class, 4)->create([
                 'project_id' => $project->id,
             ]);
         });

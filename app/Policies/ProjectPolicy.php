@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Project;
-use App\User;
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProjectPolicy
@@ -13,8 +13,8 @@ class ProjectPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
      * @return mixed
      */
     public function authorOrMember(User $user, Project $project)
