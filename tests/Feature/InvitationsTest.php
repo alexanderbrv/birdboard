@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Facades\Tests\Arrangements\ProjectArrangement;
 use Tests\TestCase;
 
-class AnvitationsTest extends TestCase
+class InvitationsTest extends TestCase
 {
     use RefreshDatabase;
 
