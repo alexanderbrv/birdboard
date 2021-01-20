@@ -2,21 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvitationRequest;
 use App\Models\Project;
 use App\Models\User;
 
 class InvitationsController extends Controller
 {
-    public function invite(Project $project)
+    public function invite(Project $project, InvitationRequest $request)
     {
-        $this->authorize('author-or-member', $project);
-
-        request()->validate([
-            'email' => ['required', 'exists:users,email'],
-        ], [
-            'email.exists' => "The user you are inviting must have a " . config('app.name') . " account",
-        ]);
-
         $user = User::whereEmail(request('email'))->first();
 
         $project->invite($user);

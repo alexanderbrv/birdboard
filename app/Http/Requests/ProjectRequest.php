@@ -24,7 +24,7 @@ class ProjectRequest extends FormRequest
 
         $this->setProject();
 
-        return Gate::allows('author-or-member', $this->project);
+        return Gate::allows('owner-or-member', $this->project);
     }
 
     /**

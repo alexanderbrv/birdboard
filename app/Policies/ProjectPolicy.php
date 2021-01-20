@@ -17,7 +17,19 @@ class ProjectPolicy
      * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function authorOrMember(User $user, Project $project)
+    public function owner(User $user, Project $project)
+    {
+        return $user->is($project->owner);
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
+     * @return mixed
+     */
+    public function ownerOrMember(User $user, Project $project)
     {
         return $user->is($project->owner) || $project->members->contains($user);
     }
