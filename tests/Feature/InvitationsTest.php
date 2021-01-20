@@ -13,7 +13,47 @@ class InvitationsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function a_project_can_invite_a_user()
+    function non_owners_may_not_invite_users()
+    {
+        $project = ProjectArrangement::create();
+
+        $randomUser = $this->newUser();
+
+        $this->actingAs($randomUser)
+            ->post($project->path() . '/invitations')
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    function a_project_owner_can_invite_a_user()
+    {
+        $project = ProjectArrangement::create();
+
+        $userToInvite = $this->newUser();
+
+        $this->actingAs($project->owner)
+            ->post($project->path() . '/invitations', [
+                'email' => $userToInvite->email,
+            ])
+            ->assertRedirect($project->path());
+
+        $this->assertTrue($project->members->contains($userToInvite));
+    }
+
+    /** @test */
+    function the_email_address_must_be_associated_with_a_existing_valid_account()
+    {
+        $project = ProjectArrangement::create();
+
+        $this->actingAs($project->owner)
+            ->post($project->path() . '/invitations', ['email' => 'notuser@example.org'])
+            ->assertSessionHasErrors([
+                'email' => "The user you are inviting must have a " . config('app.name') . " account"
+            ]);
+    }
+
+    /** @test */
+    function invited_user_may_update_project_details()
     {
         $project = ProjectArrangement::create();
 
@@ -21,7 +61,9 @@ class InvitationsTest extends TestCase
 
         $this->actingAs($newUser);
         $this->post($project->pathToAddTask(), $task = ['body' => 'foo task']);
+        $this->patch($project->path(), $attributes = ['title' => 'new title']);
 
         $this->assertDatabaseHas('tasks', $task);
+        $this->assertDatabaseHas('projects', $attributes);
     }
 }

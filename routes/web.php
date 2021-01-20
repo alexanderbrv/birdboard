@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('/projects', 'ProjectsController');
+    Route::resource('projects', 'ProjectsController');
 
     Route::post('/projects/{project}/tasks', 'TasksController@store')->name('tasks.store');
     Route::patch('/projects/{project}/tasks/{task}', 'TasksController@update')->name('tasks.update');
+
+    Route::post('/projects/{project}/invitations', 'InvitationsController@invite');
 
     Route::get('/home', 'HomeController@index')->name('home');
 });

@@ -12,6 +12,10 @@ class ProjectArrangement
 
     protected $user;
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function ownedBy(User $user = null)
     {
         $this->user = $user;
@@ -19,6 +23,9 @@ class ProjectArrangement
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function ownedByNewUser()
     {
         $this->user = null;
