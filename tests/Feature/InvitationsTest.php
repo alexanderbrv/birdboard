@@ -16,12 +16,19 @@ class InvitationsTest extends TestCase
     function non_owners_may_not_invite_users()
     {
         $project = ProjectArrangement::create();
+        $user = $this->newUser();
 
-        $randomUser = $this->newUser();
+        $assertInvitationForbidden = function () use ($user, $project) {
+            $this->actingAs($user)
+                ->post($project->path() . '/invitations')
+                ->assertStatus(403);
+        };
 
-        $this->actingAs($randomUser)
-            ->post($project->path() . '/invitations')
-            ->assertStatus(403);
+        $assertInvitationForbidden();
+
+        $project->invite($user);
+
+        $assertInvitationForbidden();
     }
 
     /** @test */
@@ -49,7 +56,7 @@ class InvitationsTest extends TestCase
             ->post($project->path() . '/invitations', ['email' => 'notuser@example.org'])
             ->assertSessionHasErrors([
                 'email' => "The user you are inviting must have a " . config('app.name') . " account"
-            ]);
+            ], null, 'invitations');
     }
 
     /** @test */

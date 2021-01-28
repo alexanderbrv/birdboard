@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 
 class InvitationRequest extends FormRequest
 {
+    protected $errorBag = 'invitations';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -15,7 +17,7 @@ class InvitationRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('owner', $this->route('project'));
+        return Gate::allows('manage', $this->route('project'));
     }
 
     /**

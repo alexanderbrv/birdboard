@@ -62,13 +62,17 @@
                         <button type="submit" class="button">Save</button>
                     </form>
 
-                    @include('projects.parts.validation-errors')
+                    @include ('parts.errors')
                 </div>
             </div>
 
             <div class="lg:w-1/4 px-3">
-                @include('projects.parts.card')
-                @include('projects.activity.card')
+                @include ('projects.parts.card')
+                @include ('projects.activity.card')
+
+                @can ('manage', $project)
+                    @include ('projects.parts.invitation')
+                @endcan
             </div>
         </div>
     </main>

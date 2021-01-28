@@ -33,6 +33,6 @@
             <a href="{{ $linkAfterCancel }}">Cancel</a>
         </div>
 
-        @include('projects.parts.validation-errors')
+        @include ('parts.errors')
     </form>
 </div>

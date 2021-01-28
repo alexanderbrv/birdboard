@@ -11,13 +11,13 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can manage the Project.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function owner(User $user, Project $project)
+    public function manage(User $user, Project $project)
     {
         return $user->is($project->owner);
     }
