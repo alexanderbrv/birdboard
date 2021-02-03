@@ -40,6 +40,18 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    function members_cannot_delete_projects()
+    {
+        $user = $this->signIn();
+
+        $project = ProjectArrangement::create();
+
+        $project->invite($user);
+
+        $this->actingAs($user)->delete($project->path())->assertStatus(403);
+    }
+
+    /** @test */
     public function a_user_can_create_a_project()
     {
         $this->signIn();

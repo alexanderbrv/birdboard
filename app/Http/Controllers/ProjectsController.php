@@ -96,7 +96,7 @@ class ProjectsController extends Controller
      */
     public function destroy(Project $project)
     {
-        $this->authorize('owner-or-member', $project);
+        $this->authorize('manage', $project);
 
         $project->delete();
 

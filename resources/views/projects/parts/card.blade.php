@@ -7,11 +7,13 @@
         {{ Str::limit($project->description, 100) }}
     </div>
 
-    <div class="mt-3 text-right">
-        <form action="{{ $project->path() }}" method="POST">
-            @method('DELETE')
-            @csrf
-            <button type="submit" class="text-sm">{{ __('Delete') }}</button>
-        </form>
-    </div>
+    @can ('manage', $project)
+        <div class="mt-3 text-right">
+            <form action="{{ $project->path() }}" method="POST">
+                @method('DELETE')
+                @csrf
+                <button type="submit" class="text-sm">{{ __('Delete') }}</button>
+            </form>
+        </div>
+    @endcan
 </div>
