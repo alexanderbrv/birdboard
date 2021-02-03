@@ -58,19 +58,8 @@ class ManageProjectsTest extends TestCase
 
         $this->get(route('projects.create'))->assertOk();
 
-        $attributes = [
-            'title'       => $this->faker->sentence,
-            'description' => $this->faker->sentence,
-            'notes'       => 'General notes.',
-        ];
-
-        $response = $this->post(route('projects.store'), $attributes);
-
-        $project = Project::where($attributes)->first();
-
-        $response->assertRedirect($project->path());
-
-        $this->get($project->path())
+        $this->followingRedirects()
+            ->post(route('projects.store'), $attributes = factory(Project::class)->raw())
             ->assertSee($attributes['title'])
             ->assertSee($attributes['notes'])
             ->assertSee($attributes['description']);
