@@ -491,11 +491,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   opacity: .5;
 }
 
-input::-ms-input-placeholder, textarea::-ms-input-placeholder {
-  color: inherit;
-  opacity: .5;
-}
-
 input::placeholder,
 textarea::placeholder {
   color: inherit;
@@ -6219,6 +6214,10 @@ table {
  * @import "utilities/background-patterns";
  * @import "utilities/skew-transforms";
  */
+
+.theme-dark .bg-white {
+  background-color: #22292f;
+}
 
 @media (min-width: 576px) {
   .sm\:list-reset {

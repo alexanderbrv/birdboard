@@ -82,3 +82,7 @@
  * @import "utilities/background-patterns";
  * @import "utilities/skew-transforms";
  */
+
+.theme-dark .bg-white {
+  @apply .bg-black;
+}

@@ -70,11 +70,7 @@ class ManageProjectsTest extends TestCase
     {
         $project = ProjectArrangement::create(['notes' => 'General notes.']);
 
-        $attributes = [
-            'notes'       => 'Updated notes.',
-            'title'       => 'Updated title.',
-            'description' => 'Updated description',
-        ];
+        $attributes = factory(Project::class)->raw(['owner_id' => $project->owner]);
 
         $this->signIn($project->owner);
 
