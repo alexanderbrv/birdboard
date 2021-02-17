@@ -11,7 +11,7 @@
             @foreach ($project->members->push($project->owner) as $member)
                 <img src="{{ gravatar_url($member->email) }}"
                      alt="{{ $member->name }}'s avatar"
-                     class="rounded-full w-10 mr-2 @if($member->id === $project->owner_id) border-2 border-blue-light @endif">
+                     class="rounded-full w-10 mr-2 @if($member->id === $project->owner_id) border-2 border-accent @endif">
             @endforeach
             
             <a href="{{ route('projects.edit', $project->id) }}" class="button ml-4">{{ __('Update Project') }}</a>
@@ -31,7 +31,7 @@
                                 @csrf
 
                                 <div class="flex">
-                                    <input type="text" name="body" value="{{ $task->body }}" class="w-full {{ $task->finished ? 'text-grey' : ''}}">
+                                    <input type="text" name="body" value="{{ $task->body }}" class="w-full {{ $task->finished ? 'text-light' : ''}}">
                                     <input type="checkbox" name="finished" onchange="this.form.submit()" {{ $task->finished ? 'checked' : ''}}>
                                 </div>
                             </form>

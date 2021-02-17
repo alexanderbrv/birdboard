@@ -37552,7 +37552,7 @@ var render = function() {
     _vm._l(_vm.themes, function(color, theme) {
       return _c("div", {
         staticClass: "rounded-full w-4 h-4 border mr-2",
-        class: { "border-blue-light": _vm.selectedTheme == theme },
+        class: { "border-accent": _vm.selectedTheme == theme },
         style: { backgroundColor: color },
         on: {
           click: function($event) {

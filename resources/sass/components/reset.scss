@@ -1,0 +1,16 @@
+body, input, textarea, li, button {
+  @apply .text-default;
+}
+
+input {
+  background: inherit;
+  outline: none;
+}
+
+*, *::before, *::after {
+  @apply .border-light;
+}
+
+.section {
+  @apply .mx-auto .py-4;
+}

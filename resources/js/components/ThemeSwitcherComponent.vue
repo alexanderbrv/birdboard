@@ -2,7 +2,7 @@
     <div class="flex items-center mr-5">
         <div v-for="(color, theme) in themes"
              class="rounded-full w-4 h-4 border mr-2"
-             :class="{ 'border-blue-light': selectedTheme == theme }"
+             :class="{ 'border-accent': selectedTheme == theme }"
              :style="{ backgroundColor: color}"
              @click="selectedTheme = theme"
         ></div>

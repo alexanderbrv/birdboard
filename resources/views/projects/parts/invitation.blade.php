@@ -1,5 +1,5 @@
 <div class="card flex flex-col mt-3">
-    <h3 class="font-normal text-xl py-4 -ml-5 mb-3 border-l-4 border-blue-light pl-4">
+    <h3 class="font-normal text-xl py-4 -ml-5 mb-3 border-l-4 border-accent pl-4">
         {{ __('Invite a User') }}
     </h3>
 
@@ -13,7 +13,7 @@
                 <input
                         type="text"
                         name="email"
-                        class="border border-grey-light rounded w-full py-2 px-3"
+                        class="border border-light rounded w-full py-2 px-3"
                         placeholder="Email">
             </div>
 
