@@ -48,6 +48,6 @@ class ProjectRequest extends FormRequest
 
     private function setProject()
     {
-        $this->project = Project::findOrFail($this->route('project'));
+        $this->project = $this->route('project');
     }
 }

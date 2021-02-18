@@ -8,7 +8,7 @@ use App\Models\User;
 
 class InvitationsController extends Controller
 {
-    public function invite(Project $project, InvitationRequest $request)
+    public function invite(InvitationRequest $request, Project $project)
     {
         $user = User::whereEmail(request('email'))->first();
 

@@ -97,9 +97,9 @@ class ManageProjectsTest extends TestCase
         $project = ProjectArrangement::create(['notes' => 'General notes.']);
 
         $this->actingAs($project->owner)
-             ->patch($project->path(), $attributes = ['notes' => 'Updated notes']);
+             ->patch($project->path(), $notes = ['notes' => 'Updated notes']);
 
-        $this->assertDatabaseHas('projects', $attributes);
+        $this->assertDatabaseHas('projects', $notes);
     }
 
     /** @test */
