@@ -605,6 +605,13 @@ input {
   box-shadow: 0 2px 7px 0 #b0eaff;
 }
 
+.button.is-outlined {
+  background-color: var(--bg-page);
+  border-width: 1px;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .title {
   color: var(--text-light);
   font-size: 1.125rem;

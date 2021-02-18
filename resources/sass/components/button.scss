@@ -1,4 +1,9 @@
 .button {
   @apply .bg-accent .text-inverse .no-underline .rounded-lg .text-sm .py-3 .px-5;
+
+  &.is-outlined {
+    @apply .bg-page .border .border-accent .text-accent;
+  }
+
   box-shadow: 0 2px 7px 0 #b0eaff;
 }

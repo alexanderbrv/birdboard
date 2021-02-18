@@ -33,7 +33,7 @@ class ProjectsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ProjectRequest $request
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function store(ProjectRequest $request)
     {
@@ -41,7 +41,13 @@ class ProjectsController extends Controller
 
         $project = auth()->user()->projects()->create($attributes);
 
-        $project->addTask();
+        if ($task = request('tasks')) {
+            $project->addTasks($task);
+        }
+
+        if (request()->wantsJson()) {
+            return ['path' => $project->path()];
+        }
 
         return redirect($project->path());
     }

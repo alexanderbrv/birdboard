@@ -130,4 +130,22 @@ class ManageProjectsTest extends TestCase
         $this->post(route('projects.store'), $attributes)
             ->assertSessionHasErrors('title');
     }
+
+    /** @test */
+    public function task_can_be_included_as_part_a_new_project_creation()
+    {
+        $attributes = factory(Project::class)->raw();
+
+        $attributes['tasks'] = [
+            ['body' => 'Task 1'],
+            ['body' => 'Task 2'],
+            ['body' => ''],
+        ];
+
+        $this->signIn();
+
+        $this->post(route('projects.store'), $attributes);
+
+        $this->assertCount(2, Project::first()->tasks);
+    }
 }
