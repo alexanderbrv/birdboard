@@ -13,10 +13,10 @@
                             name="title"
                             id="title"
                             class="border p-2 text-xs block w-full rounded"
-                            :class="errors.title ? 'border-error' : ''"
+                            :class="form.errors.title ? 'border-error' : ''"
                         >
 
-                        <span v-if="errors.title" v-text="errors.title[0]" class="text-error italic text-sm"></span>
+                        <span v-if="form.errors.title" v-text="form.errors.title[0]" class="text-error italic text-sm"></span>
                     </div>
 
                     <div class="mb-4">
@@ -56,18 +56,18 @@
 </template>
 
 <script>
+    import BirdboardForm from './BirdboardForm'
+
     export default {
         data() {
             return {
-                form: {
+                form: new BirdboardForm({
                     title: '',
                     description: '',
                     tasks: [
                         { body: '' }
                     ]
-                },
-
-                errors: {},
+                }),
             }
         },
 
@@ -82,13 +82,12 @@
                 this.form.tasks.push({ body: '' });
             },
             submit() {
-                axios.post('/projects', this.form)
-                    .then(response => {
-                        location = response.data.path;
-                    })
-                    .catch(error => {
-                        this.errors = error.response.data.errors;
-                    })
+                if (! this.form.tasks[0].body) {
+                    delete this.form.originalData.tasks;
+                }
+
+                this.form.submit('/projects')
+                    .then(response => location = response.data.path);
             }
         }
     }
