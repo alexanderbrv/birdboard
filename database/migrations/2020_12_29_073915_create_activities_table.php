@@ -19,10 +19,10 @@ class CreateActivitiesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->nullableMorphs('subject');
             $table->string('description');
-            $table->json('changes')
-                ->collation('utf8mb4_unicode_ci')
-                ->charset('utf8mb4')
-                ->nullable();
+            //$table->json('changes')
+            //    ->collation('utf8mb4_unicode_ci')
+            //    ->charset('utf8mb4')
+            //    ->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')
