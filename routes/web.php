@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return redirect()->route('projects.index');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('projects', 'ProjectsController');
